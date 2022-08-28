@@ -31,7 +31,6 @@ Router.post(
     try {
       const { author, description, filename: name } = req.body;
       const { path, mimetype } = req.file;
-      console.log(req.file);
       const split = path.split("/");
       const filename = name ?? split[split.length - 1];
       const file = new File({
@@ -44,7 +43,6 @@ Router.post(
       await file.save();
       res.send(file);
     } catch (error) {
-      console.log(error);
       res.status(400).send("Error while uploading file. Try again later.");
     }
   },
@@ -54,7 +52,6 @@ Router.post(
 );
 
 Router.get("/getAllFiles", async (_req, res) => {
-  console.log("trying to fetch files");
   try {
     const files = await File.find({});
     const sortedByCreationDate = files.sort(

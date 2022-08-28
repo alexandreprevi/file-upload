@@ -44,9 +44,7 @@ const FileUpload = ({ filesList, setFilesList }) => {
               "Content-Type": "multipart/form-data",
             },
           });
-          console.log({ res });
           setFilesList((prevState) => [...prevState, res.data]);
-          console.log(filesList);
           setFormState({
             author: "",
             description: "",
