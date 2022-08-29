@@ -140,7 +140,7 @@ const FilesList = ({ data, itemsPerPage, startFrom }) => {
                     {item.file_mimetype === "image/jpeg" ||
                     item.file_mimetype === "image/jpg" ? (
                       <AiOutlineFileJpg />
-                    ) : item.file_mimetype === "image/pdf" ? (
+                    ) : item.file_mimetype === "application/pdf" ? (
                       <AiOutlineFilePdf />
                     ) : (
                       <SiMxlinux />

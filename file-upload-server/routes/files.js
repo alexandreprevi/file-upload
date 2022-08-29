@@ -17,7 +17,7 @@ const upload = multer({
   fileFilter(_req, file, cb) {
     if (!file.originalname.match(/\.(jpeg|jpg|pdf|xml|png)$/)) {
       return cb(
-        new Error("only upload files with jpg, jpeg, pdf, xml format.")
+        new Error("only upload files with jpg, jpeg, pdf, png, and xml format.")
       );
     }
     cb(undefined, true);

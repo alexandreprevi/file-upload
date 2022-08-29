@@ -2,14 +2,23 @@ import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../utils/constants";
 
-const FileUpload = ({ filesList, setFilesList }) => {
+const FileUpload = ({ setFilesList }) => {
   const [formState, setFormState] = useState({
     author: "",
     description: "",
     filename: "",
     selectedFile: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const acceptedFileFormats = [
+    "image/png",
+    "application/pdf",
+    "application/xml",
+    "text/xml",
+    "image/jpeg",
+  ];
   const handleInputChange = (event) => {
     setFormState({
       ...formState,
@@ -32,6 +41,13 @@ const FileUpload = ({ filesList, setFilesList }) => {
       const { author, description, selectedFile, filename } = formState;
       if (author.trim() !== "" && description.trim() !== "") {
         if (selectedFile) {
+          if (!acceptedFileFormats.includes(selectedFile.type)) {
+            setErrorMessage(
+              "only upload files with jpg, jpeg, pdf, png and xml format."
+            );
+            return;
+          }
+
           const formData = new FormData();
           formData.append("file", selectedFile);
           formData.append("filename", filename);
@@ -39,6 +55,7 @@ const FileUpload = ({ filesList, setFilesList }) => {
           formData.append("description", description);
 
           setErrorMessage("");
+          setIsLoading(true);
           const res = await axios.post(`${API_URL}/upload`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -53,12 +70,15 @@ const FileUpload = ({ filesList, setFilesList }) => {
           });
           window.location.reload();
         } else {
+          setIsLoading(false);
           setErrorMessage("Please select a file to upload");
         }
       } else {
+        setIsLoading(false);
         setErrorMessage("Please enter a author and a description");
       }
     } catch (error) {
+      setIsLoading(false);
       error.response && setErrorMessage(error.response.data);
     }
   };
@@ -71,6 +91,7 @@ const FileUpload = ({ filesList, setFilesList }) => {
             <p className="message-body">{errorMessage}</p>
           </article>
         )}
+        {isLoading && <div>Loading..</div>}
         <div className="field">
           <label className="label">Author</label>
           <div className="control">

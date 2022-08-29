@@ -27,7 +27,7 @@ const App = () => {
         {filesList && (
           <>
             <FilesList data={filesList} itemsPerPage={5} startFrom={1} />
-            <FileUpload filesList={filesList} setFilesList={setFilesList} />
+            <FileUpload setFilesList={setFilesList} />
           </>
         )}
       </div>
