@@ -3,6 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const File = require("../model/file");
 const Router = express.Router();
+const fs = require("fs");
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -82,7 +83,9 @@ Router.delete("/delete/:id", async (req, res) => {
       res.status(400);
     }
 
+    fs.unlinkSync(file.file_path);
     await file.remove();
+
     res.send(file);
   } catch (error) {
     res.status(400).send("Error while deleting file. Try again later.");
